@@ -1,2 +1,6 @@
 .git
 dataset
+runs
+val
+yolo11n.pt
+data.yaml
