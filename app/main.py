@@ -6,18 +6,17 @@ cam = cv2.VideoCapture(0)
 
 def gen_frames():
     while True:
-        okay, frame = cam.read() #okay is boolean, True if successful
+    #iteratively write the current frame to the output file
+        okay, frame = cam.read() #ret is boolean, True if successful
         if not okay:break
         
         ret, buffer = cv2.imencode('.jpg',frame)
         frame = buffer.tobytes()
         
         yield(b'--frame\r\n'
-              b'Content-Type: image')
+              b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n  ')
 
 
-        if cv2.waitKey(1) & 0xFF == ord('q'):
-            break
     
 
 @app.route("/")
@@ -26,7 +25,7 @@ def hi_enoch():
 
 @app.route("/video")
 def video():
-    return Response(gen_frames)
+    return Response(gen_frames(), mimetype='multipart/x-mixed-replace; boundary=frame')
 
 
 if __name__ == "__main__":
