@@ -5,32 +5,6 @@
         <div>
             <img src = "{{ url_for('video') }}" width= "50%">
         </div>
-        <audio id="bg-audio" autoplay loop controls>
-            <source src="/static/wakeup.mp3" type="audio/mp3">
-            Your browser does not support the audio element.
-        </audio>
-
-
-        <script>
-            const startAudio = {{ 'true' if startAudio else 'false' }};
-            const audio = document.getElementById('bg-audio');
-
-            if (startAudio) {
-                audio.muted = false;  // Unmute AFTER play is triggered
-                const playAttempt = audio.play();
-                if (playAttempt !== undefined) {
-                    playAttempt.then(() => {
-                        console.log("Audio playing.");
-                    }).catch((error) => {
-                        console.log("Autoplay failed. Waiting for user interaction...");
-                        // Optional fallback: Wait for click
-                        document.body.addEventListener('click', () => {
-                            audio.play();
-                        }, { once: true });
-                    });
-                }
-            }
-        </script>
     </body>
 
 
