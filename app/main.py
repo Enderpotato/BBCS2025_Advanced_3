@@ -25,7 +25,7 @@ def is_distracted(detections):
     eyes_closed = class_list.tolist().count("Eyes closed") > 0
 
     #hi enoch put the model logic here or smt return true if distracted
-    return is_distracted or eyes_closed
+    return eyes_closed
 
 def play_sound_once():
     global last_played, is_playing_audio
