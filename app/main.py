@@ -18,14 +18,16 @@ last_played = 0
 audio_cooldown = 10 
 is_playing_audio = False
 
-def is_distracted(detections):
+def is_distracted(detections, confidence_threshold=0.9):
     class_list = detections.data["class_name"]
 
     is_distracted = class_list.tolist().count("Distracted") > 0
     eyes_closed = class_list.tolist().count("Eyes closed") > 0
 
-    #hi enoch put the model logic here or smt return true if distracted
-    return eyes_closed
+    confidence = detections.confidence.tolist()[0] if len(detections.confidence) > 0 else 0
+
+    #hi enoch put the model logic here or smt return true if distracted | DONE boyy
+    return (is_distracted or eyes_closed) and confidence > confidence_threshold
 
 def play_sound_once():
     global last_played, is_playing_audio
