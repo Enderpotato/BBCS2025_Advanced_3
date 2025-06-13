@@ -21,7 +21,7 @@ def play_sound_once():
     now = time.time()
     if now - last_played > audio_cooldown:
         last_played = now
-        threading.Thread(target=pygame.mixer.music.load, args=("static/focus.mp3",)).start()
+        threading.Thread(target=pygame.mixer.music.load, args=("static/wakeup.mp3",)).start()
         threading.Thread(target=pygame.mixer.music.play).start()
 
 
