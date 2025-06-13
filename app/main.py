@@ -2,8 +2,8 @@ from flask import Flask, render_template,Response,jsonify
 import cv2
 import time
 import threading
-import time
 import pygame
+import random
 from modelmodel import get_the_model, annotate_image
 
 model = get_the_model()
@@ -13,6 +13,7 @@ cam = cv2.VideoCapture(0)
 pygame.init()
 pygame.mixer.init()
 
+audios = ["static/wakeup.mp3","static/awesome.mp3","static/doinggreat.mp3","static/giveup.mp3"]
 
 last_played = 0
 audio_cooldown = 10 
@@ -36,6 +37,7 @@ def play_sound_once():
         last_played = now
         is_playing_audio = True
         def play():
+            sound = audios[random.randint(0,len(audios) - 1)]
             pygame.mixer.music.load("static/wakeup.mp3")
             pygame.mixer.music.play()
             time.sleep(2)
