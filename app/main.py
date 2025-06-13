@@ -6,8 +6,7 @@ cam = cv2.VideoCapture(0)
 
 def gen_frames():
     while True:
-    #iteratively write the current frame to the output file
-        okay, frame = cam.read() #ret is boolean, True if successful
+        okay, frame = cam.read() #okay is boolean, True if successful
         if not okay:break
         
         ret, buffer = cv2.imencode('.jpg',frame)
