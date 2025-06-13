@@ -4,6 +4,9 @@ import time
 import threading
 import time
 import pygame
+from modelmodel import get_the_model, annotate_image
+
+model = get_the_model()
 
 app = Flask(__name__)
 cam = cv2.VideoCapture(0)
@@ -11,9 +14,14 @@ cam = cv2.VideoCapture(0)
 last_played = 0
 audio_cooldown = 10 
 
-def is_distracted(frame):
+def is_distracted(detections):
+    class_list = detections.data["class_name"]
+
+    is_distracted = class_list.tolist().count("Distracted") > 0
+    eyes_closed = class_list.tolist().count("Eyes closed") > 0
+
     #hi enoch put the model logic here or smt return true if distracted
-    return True
+    return is_distracted or eyes_closed
 
 def play_sound_once():
     global last_played
@@ -28,11 +36,13 @@ def gen_frames():
     while True:
         okay, frame = cam.read() #ret is boolean, True if successful
         if not okay:break
+
+        annotated, detections = annotate_image(frame, model)
         
-        if is_distracted(frame):
+        if is_distracted(detections):
             play_sound_once()
 
-        ret, buffer = cv2.imencode('.jpg',frame)
+        ret, buffer = cv2.imencode('.jpg',annotated)
         frame = buffer.tobytes()
         
         yield(b'--frame\r\n'
