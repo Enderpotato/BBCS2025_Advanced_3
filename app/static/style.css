@@ -14,7 +14,6 @@ h1 {
   color: #333;
   margin-bottom: 20px;
   font-size: 2em;
-  letter-spacing: 1px;
 }
 
 .camera-container {
@@ -22,11 +21,7 @@ h1 {
   padding: 20px;
   border-radius: 20px;
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s ease;
-}
-
-.camera-container:hover {
-  transform: scale(1.02);
+  transition: border 0.3s ease;
 }
 
 img {
@@ -34,3 +29,14 @@ img {
   max-width: 100%;
   height: auto;
 }
+
+@keyframes blink-red {
+  0%   { box-shadow: 0 0 0 10px red; }
+  50%  { box-shadow: 0 0 0 10px transparent; }
+  100% { box-shadow: 0 0 0 10px red; }
+}
+
+.distracted {
+  animation: blink-red 3s infinite;
+}
+
