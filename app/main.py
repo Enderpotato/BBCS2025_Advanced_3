@@ -1,7 +1,6 @@
 from flask import Flask, render_template,Response
 import cv2
 import time
-from playsound import playsound
 import threading
 import time
 import pygame
