@@ -12,10 +12,17 @@ def annotate_image(image: np.array, model):
     bounding_box_annotator = sv.BoxAnnotator()
     label_annotator = sv.LabelAnnotator()
 
+    labels = [
+        f"{class_name} {confidence*100:.1f}%"
+        for class_name, confidence in zip(
+            detections.data['class_name'], detections.confidence
+        )
+    ]
+
     annotated_image = bounding_box_annotator.annotate(
         scene=image, detections=detections)
     annotated_image = label_annotator.annotate(
-        scene=annotated_image, detections=detections)
+        scene=annotated_image, detections=detections, labels=labels)
 
     return annotated_image, detections
 
