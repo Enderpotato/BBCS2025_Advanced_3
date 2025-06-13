@@ -3,11 +3,26 @@
   <head>
     <title>Focus Monitor</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script>
+      function pollStatus() {
+        fetch("/status")
+          .then(response => response.json())
+          .then(data => {
+            const camWrapper = document.getElementById("cam-wrapper");
+            if (data.distracted) {
+              camWrapper.classList.add("distracted");
+            } else {
+              camWrapper.classList.remove("distracted");
+            }
+          });
+      }
+      setInterval(pollStatus, 500); // Check every half-second
+    </script>
   </head>
   <body>
     <h1>ARE YOU FOCUSING?</h1>
-    <div class="camera-container">
-      <img src="{{ url_for('video') }}" width="640" height="480">
+    <div id="cam-wrapper" class="camera-container">
+      <img id="cam" src="{{ url_for('video') }}" width="640" height="480">
     </div>
   </body>
 </html>
