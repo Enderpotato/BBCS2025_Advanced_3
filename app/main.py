@@ -1,6 +1,10 @@
 from flask import Flask, render_template,Response
 import cv2
 import time
+from playsound import playsound
+import threading
+import time
+import pygame
 
 app = Flask(__name__)
 cam = cv2.VideoCapture(0)
@@ -21,7 +25,6 @@ def play_sound_once():
         threading.Thread(target=pygame.mixer.music.play).start()
 
 
-
 def gen_frames():
     while True:
         okay, frame = cam.read() #ret is boolean, True if successful
@@ -36,6 +39,8 @@ def gen_frames():
         yield(b'--frame\r\n'
               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n')
 
+    
+
 @app.route("/")
 def hi_enoch():
     return render_template('index.html')
@@ -48,6 +53,7 @@ def video():
 
 
 if __name__ == "__main__":
-    timeLastAudioPlayed = -audioLength
+    # timeLastAudioPlayed = -audioLength
+    pygame.init()
+    pygame.mixer.init()
     app.run(debug = True)
-
